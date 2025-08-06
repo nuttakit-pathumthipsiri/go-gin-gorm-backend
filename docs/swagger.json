@@ -1,0 +1,639 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "A RESTful API for managing topics and topic details using Go, Gin, and GORM",
+        "title": "Go Gin GORM Backend API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.swagger.io/support",
+            "email": "support@swagger.io"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/details/{id}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "topic-details"
+                ],
+                "summary": "Get a topic detail by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Topic Detail ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.TopicDetail"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.BadRequestError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.NotFoundError"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "topic-details"
+                ],
+                "summary": "Update a topic detail",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Topic Detail ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated Topic Detail object",
+                        "name": "detail",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UpdateTopicDetailRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.TopicDetail"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.BadRequestError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.NotFoundError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/model.InternalServerError"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "topic-details"
+                ],
+                "summary": "Delete a topic detail",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Topic Detail ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.BadRequestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/model.InternalServerError"
+                        }
+                    }
+                }
+            }
+        },
+        "/topics": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "topics"
+                ],
+                "summary": "Get all topics",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Topic"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/model.InternalServerError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "topics"
+                ],
+                "summary": "Create a new topic",
+                "parameters": [
+                    {
+                        "description": "Topic request object",
+                        "name": "topic",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateTopicRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/model.Topic"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.BadRequestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/model.InternalServerError"
+                        }
+                    }
+                }
+            }
+        },
+        "/topics/{id}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "topics"
+                ],
+                "summary": "Get a topic by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Topic ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Topic"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.BadRequestError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.NotFoundError"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "topics"
+                ],
+                "summary": "Update a topic",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Topic ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated Topic request object",
+                        "name": "topic",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UpdateTopicRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Topic"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.BadRequestError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.NotFoundError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/model.InternalServerError"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "topics"
+                ],
+                "summary": "Delete a topic",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Topic ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.BadRequestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/model.InternalServerError"
+                        }
+                    }
+                }
+            }
+        },
+        "/topics/{id}/details": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "topic-details"
+                ],
+                "summary": "Get all details for a topic",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Topic ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.TopicDetail"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.BadRequestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/model.InternalServerError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "topic-details"
+                ],
+                "summary": "Create a new topic detail",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Topic ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Topic Detail object",
+                        "name": "detail",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateTopicDetailRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/model.TopicDetail"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.BadRequestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/model.InternalServerError"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "model.BadRequestError": {
+            "description": "Bad Request error response",
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "example": "Invalid request data"
+                }
+            }
+        },
+        "model.CreateTopicDetailRequest": {
+            "description": "Topic detail request object",
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "description": "ชื่อ topic_detail",
+                    "type": "string",
+                    "example": "ยาแก้ปวด"
+                }
+            }
+        },
+        "model.CreateTopicRequest": {
+            "description": "Topic request object",
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "description": "ชื่อ topic",
+                    "type": "string",
+                    "example": "ยา"
+                }
+            }
+        },
+        "model.InternalServerError": {
+            "description": "Internal Server Error response",
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "example": "Internal server error occurred"
+                }
+            }
+        },
+        "model.NotFoundError": {
+            "description": "Not Found error response",
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "example": "Resource not found"
+                }
+            }
+        },
+        "model.Topic": {
+            "description": "Topic entity",
+            "type": "object",
+            "required": [
+                "created_by",
+                "name",
+                "order"
+            ],
+            "properties": {
+                "created_at": {
+                    "description": "วันที่สร้าง",
+                    "type": "string",
+                    "example": "2024-01-01T00:00:00Z"
+                },
+                "created_by": {
+                    "description": "ผู้สร้าง",
+                    "type": "string",
+                    "example": "admin"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "name": {
+                    "description": "ชื่อ topic",
+                    "type": "string",
+                    "example": "ยา"
+                },
+                "order": {
+                    "description": "ลำดับ topic",
+                    "type": "integer",
+                    "example": 1
+                },
+                "updated_at": {
+                    "description": "วันที่อัพเดท",
+                    "type": "string",
+                    "example": "2024-01-01T00:00:00Z"
+                },
+                "updated_by": {
+                    "description": "ผู้อัพเดท",
+                    "type": "string",
+                    "example": "admin"
+                }
+            }
+        },
+        "model.TopicDetail": {
+            "description": "Topic detail entity",
+            "type": "object",
+            "required": [
+                "created_by",
+                "name",
+                "order"
+            ],
+            "properties": {
+                "created_at": {
+                    "description": "วันที่สร้าง",
+                    "type": "string",
+                    "example": "2024-01-01T00:00:00Z"
+                },
+                "created_by": {
+                    "description": "ผู้สร้าง",
+                    "type": "string",
+                    "example": "admin"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "name": {
+                    "description": "ชื่อ topic_detail",
+                    "type": "string",
+                    "example": "ยาแก้ปวด"
+                },
+                "order": {
+                    "description": "ลำดับ topic_detail",
+                    "type": "integer",
+                    "example": 1
+                },
+                "topic": {
+                    "$ref": "#/definitions/model.Topic"
+                },
+                "topic_id": {
+                    "description": "รหัส topic",
+                    "type": "integer",
+                    "example": 1
+                },
+                "updated_at": {
+                    "description": "วันที่อัพเดท",
+                    "type": "string",
+                    "example": "2024-01-01T00:00:00Z"
+                },
+                "updated_by": {
+                    "description": "ผู้อัพเดท",
+                    "type": "string",
+                    "example": "admin"
+                }
+            }
+        },
+        "model.UpdateTopicDetailRequest": {
+            "description": "Update topic detail request object",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "ชื่อ topic_detail (optional)",
+                    "type": "string",
+                    "example": "ยาแก้ปวด"
+                },
+                "order": {
+                    "description": "ลำดับ topic_detail (optional)",
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "model.UpdateTopicRequest": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "ชื่อ topic (optional)",
+                    "type": "string",
+                    "example": "ยา"
+                },
+                "order": {
+                    "description": "ลำดับ topic (optional)",
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "description": "Type \"Bearer\" followed by a space and JWT token.",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}
