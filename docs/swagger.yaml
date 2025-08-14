@@ -27,12 +27,40 @@ definitions:
     required:
     - name
     type: object
+  model.ErrorResponse:
+    description: Standard error response
+    properties:
+      error:
+        example: Invalid request data
+        type: string
+    type: object
   model.InternalServerError:
     description: Internal Server Error response
     properties:
       error:
         example: Internal server error occurred
         type: string
+    type: object
+  model.LoginRequest:
+    properties:
+      password:
+        example: admin123
+        type: string
+      username:
+        example: admin
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  model.LoginResponse:
+    properties:
+      refresh_token:
+        type: string
+      token:
+        type: string
+      user:
+        $ref: '#/definitions/model.UserResponse'
     type: object
   model.NotFoundError:
     description: Not Found error response
@@ -140,6 +168,31 @@ definitions:
         example: 1
         type: integer
     type: object
+  model.UserResponse:
+    properties:
+      created_at:
+        type: string
+      email:
+        example: john@example.com
+        type: string
+      full_name:
+        example: John Doe
+        type: string
+      id:
+        example: 1
+        type: integer
+      is_active:
+        example: true
+        type: boolean
+      role:
+        example: user
+        type: string
+      updated_at:
+        type: string
+      username:
+        example: john_doe
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact:
@@ -155,6 +208,36 @@ info:
   title: Go Gin GORM Backend API
   version: "1.0"
 paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user and return JWT tokens
+      parameters:
+      - description: User credentials
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Login user
+      tags:
+      - auth
   /details/{id}:
     delete:
       parameters:
@@ -174,6 +257,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/model.InternalServerError'
+      security:
+      - BearerAuth: []
       summary: Delete a topic detail
       tags:
       - topic-details
@@ -199,6 +284,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/model.NotFoundError'
+      security:
+      - BearerAuth: []
       summary: Get a topic detail by ID
       tags:
       - topic-details
@@ -236,6 +323,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/model.InternalServerError'
+      security:
+      - BearerAuth: []
       summary: Update a topic detail
       tags:
       - topic-details
@@ -254,6 +343,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/model.InternalServerError'
+      security:
+      - BearerAuth: []
       summary: Get all topics
       tags:
       - topics
@@ -282,6 +373,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/model.InternalServerError'
+      security:
+      - BearerAuth: []
       summary: Create a new topic
       tags:
       - topics
@@ -304,6 +397,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/model.InternalServerError'
+      security:
+      - BearerAuth: []
       summary: Delete a topic
       tags:
       - topics
@@ -329,6 +424,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/model.NotFoundError'
+      security:
+      - BearerAuth: []
       summary: Get a topic by ID
       tags:
       - topics
@@ -366,6 +463,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/model.InternalServerError'
+      security:
+      - BearerAuth: []
       summary: Update a topic
       tags:
       - topics
@@ -394,6 +493,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/model.InternalServerError'
+      security:
+      - BearerAuth: []
       summary: Get all details for a topic
       tags:
       - topic-details
@@ -427,6 +528,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/model.InternalServerError'
+      security:
+      - BearerAuth: []
       summary: Create a new topic detail
       tags:
       - topic-details

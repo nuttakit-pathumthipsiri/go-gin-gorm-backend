@@ -55,20 +55,29 @@ func main() {
 	// Seed initial topic details
 	config.SeedTopicDetails(db)
 
+	// Seed admin user
+	config.SeedAdminUser(db)
+
+	// Initialize JWT
+	config.InitJWT()
+
 	// Initialize repositories
 	topicRepo := repository.NewTopicRepository(db)
 	topicDetailRepo := repository.NewTopicDetailRepository(db)
+	userRepo := repository.NewUserRepository(db)
 
 	// Initialize services
 	topicService := service.NewTopicService(topicRepo)
 	topicDetailService := service.NewTopicDetailService(topicDetailRepo)
+	userService := service.NewUserService(userRepo)
 
 	// Initialize handlers
 	topicHandler := handler.NewTopicHandler(topicService)
 	topicDetailHandler := handler.NewTopicDetailHandler(topicDetailService)
+	authHandler := handler.NewAuthHandler(userService)
 
 	// Setup router
-	r := router.SetupRouter(topicHandler, topicDetailHandler)
+	r := router.SetupRouter(topicHandler, topicDetailHandler, authHandler)
 
 	// Start server
 	r.Run()

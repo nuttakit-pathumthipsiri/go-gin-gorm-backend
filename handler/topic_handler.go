@@ -21,6 +21,7 @@ func NewTopicHandler(service service.TopicService) *TopicHandler {
 // @Tags topics
 // @Accept json
 // @Produce json
+// @Security BearerAuth
 // @Param topic body model.CreateTopicRequest true "Topic request object"
 // @Success 201 {object} model.Topic
 // @Failure 400 {object} model.BadRequestError
@@ -46,6 +47,7 @@ func (h *TopicHandler) CreateTopic(c *gin.Context) {
 // @Summary Get all topics
 // @Tags topics
 // @Produce json
+// @Security BearerAuth
 // @Success 200 {array} model.Topic
 // @Failure 500 {object} model.InternalServerError
 // @Router /topics [get]
@@ -62,6 +64,7 @@ func (h *TopicHandler) GetAllTopics(c *gin.Context) {
 // @Summary Get a topic by ID
 // @Tags topics
 // @Produce json
+// @Security BearerAuth
 // @Param id path string true "Topic ID"
 // @Success 200 {object} model.Topic
 // @Failure 400 {object} model.BadRequestError
@@ -87,6 +90,7 @@ func (h *TopicHandler) GetTopicByID(c *gin.Context) {
 // @Tags topics
 // @Accept json
 // @Produce json
+// @Security BearerAuth
 // @Param id path string true "Topic ID"
 // @Param topic body model.UpdateTopicRequest true "Updated Topic request object"
 // @Success 200 {object} model.Topic
@@ -119,6 +123,7 @@ func (h *TopicHandler) UpdateTopic(c *gin.Context) {
 // DeleteTopic godoc
 // @Summary Delete a topic
 // @Tags topics
+// @Security BearerAuth
 // @Param id path string true "Topic ID"
 // @Success 204 "No Content"
 // @Failure 400 {object} model.BadRequestError

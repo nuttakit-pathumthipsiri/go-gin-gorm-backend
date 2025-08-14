@@ -21,6 +21,7 @@ func NewTopicDetailHandler(service service.TopicDetailService) *TopicDetailHandl
 // @Tags topic-details
 // @Accept json
 // @Produce json
+// @Security BearerAuth
 // @Param id path string true "Topic ID"
 // @Param detail body model.CreateTopicDetailRequest true "Topic Detail object"
 // @Success 201 {object} model.TopicDetail
@@ -53,6 +54,7 @@ func (h *TopicDetailHandler) CreateTopicDetail(c *gin.Context) {
 // @Summary Get all details for a topic
 // @Tags topic-details
 // @Produce json
+// @Security BearerAuth
 // @Param id path string true "Topic ID"
 // @Success 200 {array} model.TopicDetail
 // @Failure 400 {object} model.BadRequestError
@@ -77,6 +79,7 @@ func (h *TopicDetailHandler) GetAllDetailsByTopicID(c *gin.Context) {
 // @Summary Get a topic detail by ID
 // @Tags topic-details
 // @Produce json
+// @Security BearerAuth
 // @Param id path string true "Topic Detail ID"
 // @Success 200 {object} model.TopicDetail
 // @Failure 400 {object} model.BadRequestError
@@ -102,6 +105,7 @@ func (h *TopicDetailHandler) GetDetailByID(c *gin.Context) {
 // @Tags topic-details
 // @Accept json
 // @Produce json
+// @Security BearerAuth
 // @Param id path string true "Topic Detail ID"
 // @Param detail body model.UpdateTopicDetailRequest true "Updated Topic Detail object"
 // @Success 200 {object} model.TopicDetail
@@ -134,6 +138,7 @@ func (h *TopicDetailHandler) UpdateTopicDetail(c *gin.Context) {
 // DeleteTopicDetail godoc
 // @Summary Delete a topic detail
 // @Tags topic-details
+// @Security BearerAuth
 // @Param id path string true "Topic Detail ID"
 // @Success 204 "No Content"
 // @Failure 400 {object} model.BadRequestError
@@ -151,4 +156,4 @@ func (h *TopicDetailHandler) DeleteTopicDetail(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusNoContent, nil)
-} 
+}
