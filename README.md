@@ -34,8 +34,7 @@ brew install make
 Connect to SQL Server container:
 
 ```bash
-docker exec -it sqlserver-dev /opt/mssql-tools/bin/sqlcmd \
-   -S localhost -U sa -P StrongP@ssw0rd
+docker-compose up
 ```
 
 ### 2. Run Application

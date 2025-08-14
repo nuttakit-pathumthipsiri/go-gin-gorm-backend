@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  sqlserver-dev:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=StrongP@ssw0rd
+      - DB_NAME=go_gin_gorm_db
+      - DB_SERVER=localhost
+      - DB_PORT=1433
+      - DB_USER=sa
+      - DB_PASSWORD=StrongP@ssw0rd
+    ports:
+      - "1433:1433"
+    container_name: sqlserver-dev
+    env_file:
+      - .env
